@@ -21,5 +21,5 @@ public class MetodoPago {
     private String descripcion;
 
     @Column(length = 50)
-    private String identificador; // Puede ser null
+    private String identificador;
 }

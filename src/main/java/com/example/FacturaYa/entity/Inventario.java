@@ -1,5 +1,6 @@
 package com.example.FacturaYa.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -26,13 +27,13 @@ public class Inventario {
     private Date fecha;
 
     @Column(nullable = false)
-    private String tipoMovimiento; // entrada o salida
+    private String tipoMovimiento;
 
-    @Column(nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10, 2) DEFAULT 0")
-    private Double entrada = 0.0;
+    @Column(nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT 0")
+    private BigDecimal entrada;
 
-    @Column(nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10, 2) DEFAULT 0")
-    private Double salida = 0.0;
+    @Column(nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT 0")
+    private BigDecimal salida;
 
     @Column(columnDefinition = "TEXT")
     private String observaciones;

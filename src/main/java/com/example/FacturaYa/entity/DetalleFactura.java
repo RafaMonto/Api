@@ -1,5 +1,7 @@
 package com.example.FacturaYa.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +23,9 @@ public class DetalleFactura {
     private int cantidad;
 
     @Column(name = "valor_total")
-    private double valorTotal;
+    private BigDecimal valorTotal;
 
-    private double descuento;
+    private BigDecimal descuento;
 
     @ManyToOne
     private Producto producto;

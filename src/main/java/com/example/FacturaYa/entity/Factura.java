@@ -1,5 +1,6 @@
 package com.example.FacturaYa.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -28,17 +29,17 @@ public class Factura {
     @Column(nullable = false)
     private Date fecha;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private Double subtotal;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private Double totalImpuestos;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private Double total;
+    @Column(nullable = false)
+    private BigDecimal subtotal;
 
     @Column(nullable = false)
-    private String estado; // pendiente, pagado, cancelado
+    private BigDecimal totalImpuestos;
+
+    @Column(nullable = false)
+    private BigDecimal total;
+
+    @Column(nullable = false)
+    private String estado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")

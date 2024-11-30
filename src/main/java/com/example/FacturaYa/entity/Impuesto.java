@@ -1,6 +1,6 @@
 package com.example.FacturaYa.entity;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +19,6 @@ public class Impuesto {
 
     private String nombre;
 
-    private DecimalFormat porcentaje;
+    private BigDecimal porcentaje;
 
 }

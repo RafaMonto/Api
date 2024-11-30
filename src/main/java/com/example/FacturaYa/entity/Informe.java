@@ -26,5 +26,5 @@ public class Informe {
     private Date fecha;
 
     @Column(nullable = false, columnDefinition = "JSON")
-    private String datosJson; // Representación JSON en formato String
+    private String datosJson;
 }

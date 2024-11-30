@@ -1,5 +1,7 @@
 package com.example.FacturaYa.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,8 +28,8 @@ public class Producto {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private Double precioVenta;
+    @Column(nullable = false)
+    private BigDecimal precioVenta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_impuesto", referencedColumnName = "id")
