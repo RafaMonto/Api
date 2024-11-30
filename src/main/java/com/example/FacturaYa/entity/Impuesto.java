@@ -17,6 +17,8 @@ public class Impuesto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nombre;
+
     private DecimalFormat porcentaje;
 
 }

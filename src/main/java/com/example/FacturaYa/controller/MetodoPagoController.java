@@ -16,7 +16,7 @@ import com.example.FacturaYa.entity.MetodoPago;
 import com.example.FacturaYa.service.MetodoPagoService;
 
 @RestController
-@RequestMapping(path = "api/metodos_pago")
+@RequestMapping(path = "api/metodos-pago")
 public class MetodoPagoController {
 
     @Autowired
