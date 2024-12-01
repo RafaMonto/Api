@@ -2,13 +2,7 @@ package com.example.FacturaYa.entity;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -28,8 +22,11 @@ public class DetalleFactura {
     private BigDecimal descuento;
 
     @ManyToOne
-    private Producto producto;
+    @JoinColumn(name = "id_factura", referencedColumnName = "id") // Referencia a la columna 'id_factura'
+    private Factura factura;
 
     @ManyToOne
-    private Factura factura;
+    @JoinColumn(name = "id_producto", referencedColumnName = "id") // Referencia a la columna 'producto_id'
+    private Producto producto;
+
 }
