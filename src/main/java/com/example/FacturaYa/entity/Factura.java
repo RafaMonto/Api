@@ -32,7 +32,7 @@ public class Factura {
     @Column(nullable = false)
     private BigDecimal subtotal;
 
-    @Column(nullable = false)
+    @Column(name = "total_impuestos",nullable = false)
     private BigDecimal totalImpuestos;
 
     @Column(nullable = false)

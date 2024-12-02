@@ -23,8 +23,30 @@ public class DetalleFacturaService {
         return detalleFacturaRepository.findById(id);
     }
 
-    public void saveOrUpdate(DetalleFactura detalleFactura) {
+    public void save(DetalleFactura detalleFactura) {
         detalleFacturaRepository.save(detalleFactura);
+    }
+
+    public DetalleFactura updateDetalleFactura(Long id, DetalleFactura detalleFactura) {
+        // Buscar detalle de factura por ID
+        Optional<DetalleFactura> detalleExistenteOpt = detalleFacturaRepository.findById(id);
+
+        if (detalleExistenteOpt.isPresent()) {
+            DetalleFactura detalleExistente = detalleExistenteOpt.get();
+
+            // Modificar los campos
+            detalleExistente.setCantidad(detalleFactura.getCantidad());
+            detalleExistente.setValorTotal(detalleFactura.getValorTotal());
+            detalleExistente.setDescuento(detalleFactura.getDescuento());
+            detalleExistente.setProducto(detalleFactura.getProducto());
+            detalleExistente.setFactura(detalleFactura.getFactura());
+
+            // Guardar el detalle de factura actualizado
+            return detalleFacturaRepository.save(detalleExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {

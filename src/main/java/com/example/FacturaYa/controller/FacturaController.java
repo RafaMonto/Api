@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,12 @@ public class FacturaController {
 
     @PostMapping
     public void saveOrUpdate(@RequestBody Factura factura) {
-        facturaService.saveOrUpdate(factura);
+        facturaService.save(factura);
+    }
+
+    @PutMapping("/{id}")
+    public Factura updateFactura(@PathVariable Long id, @RequestBody Factura factura) {
+        return facturaService.updateFactura(id, factura);
     }
 
     @DeleteMapping("/{id}")

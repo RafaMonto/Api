@@ -23,8 +23,31 @@ public class InventarioService {
         return inventarioRepository.findById(id);
     }
 
-    public void saveOrUpdate(Inventario inventario) {
+    public void save(Inventario inventario) {
         inventarioRepository.save(inventario);
+    }
+
+    public Inventario updateInventario(Long id, Inventario inventario) {
+        // Buscar inventario por ID
+        Optional<Inventario> inventarioExistenteOpt = inventarioRepository.findById(id);
+
+        if (inventarioExistenteOpt.isPresent()) {
+            Inventario inventarioExistente = inventarioExistenteOpt.get();
+
+            // Modificar los campos
+            inventarioExistente.setFecha(inventario.getFecha());
+            inventarioExistente.setTipoMovimiento(inventario.getTipoMovimiento());
+            inventarioExistente.setEntrada(inventario.getEntrada());
+            inventarioExistente.setSalida(inventario.getSalida());
+            inventarioExistente.setObservaciones(inventario.getObservaciones());
+            inventarioExistente.setProducto(inventario.getProducto());
+
+            // Guardar inventario actualizado
+            return inventarioRepository.save(inventarioExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {

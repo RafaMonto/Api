@@ -22,8 +22,27 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public void saveOrUpdate(Cliente cliente) {
+    public void save(Cliente cliente) {
         clienteRepository.save(cliente);
+    }
+
+    public Cliente updateCliente(Long id, Cliente cliente) {
+        // Buscar cliente por ID
+        Optional<Cliente> clienteExistenteOpt = clienteRepository.findById(id);
+
+        if (clienteExistenteOpt.isPresent()) {
+            Cliente clienteExistente = clienteExistenteOpt.get();
+
+            // Modificar los campos
+            clienteExistente.setNombre(cliente.getNombre());
+            clienteExistente.setEmail(cliente.getEmail());
+
+            // Guardar cliente actualizado
+            return clienteRepository.save(clienteExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {

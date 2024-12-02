@@ -23,8 +23,26 @@ public class CategoriaService {
         return categoriaRepository.findById(id);
     }
 
-    public void saveOrUpdate(Categoria categoria) {
+    public void save(Categoria categoria) {
         categoriaRepository.save(categoria);
+    }
+
+    public Categoria updateCategoria(Long id, Categoria categoria) {
+        // Buscar categoría por ID
+        Optional<Categoria> categoriaExistenteOpt = categoriaRepository.findById(id);
+
+        if (categoriaExistenteOpt.isPresent()) {
+            Categoria categoriaExistente = categoriaExistenteOpt.get();
+
+            // Modificar los campos
+            categoriaExistente.setDescripcion(categoria.getDescripcion());
+
+            // Guardar categoría actualizada
+            return categoriaRepository.save(categoriaExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {

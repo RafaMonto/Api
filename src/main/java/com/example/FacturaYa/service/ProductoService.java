@@ -23,8 +23,32 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
-    public void saveOrUpdate(Producto producto) {
+    public void save(Producto producto) {
         productoRepository.save(producto);
+    }
+
+    public Producto updateProducto(Long id, Producto producto) {
+        // Buscar el producto por su ID
+        Optional<Producto> productoExistenteOpt = productoRepository.findById(id);
+        
+        if (productoExistenteOpt.isPresent()) {
+            // Si el producto existe, obtenemos la entidad
+            Producto productoExistente = productoExistenteOpt.get();
+            
+            // Modificamos los campos que deseamos actualizar
+            productoExistente.setCodigo(producto.getCodigo());
+            productoExistente.setDescripcion(producto.getDescripcion());
+            productoExistente.setPrecioVenta(producto.getPrecioVenta());
+            productoExistente.setMedida(producto.getMedida());
+            productoExistente.setImpuesto(producto.getImpuesto());  // Si estás cambiando el impuesto
+            productoExistente.setCategoria(producto.getCategoria()); // Si estás cambiando la categoría
+
+            // Guardar el producto actualizado
+            return productoRepository.save(productoExistente);
+        } else {
+            // Si no se encuentra el producto, puedes lanzar una excepción o retornar null
+            return null;
+        }
     }
 
     public void delete(Long id) {

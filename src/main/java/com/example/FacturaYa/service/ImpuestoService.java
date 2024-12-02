@@ -22,8 +22,27 @@ public class ImpuestoService {
         return impuestoRepository.findById(id);
     }
 
-    public void saveOrUpdate(Impuesto impuesto) {
+    public void save(Impuesto impuesto) {
         impuestoRepository.save(impuesto);
+    }
+
+    public Impuesto updateImpuesto(Long id, Impuesto impuesto) {
+        // Buscar impuesto por ID
+        Optional<Impuesto> impuestoExistenteOpt = impuestoRepository.findById(id);
+
+        if (impuestoExistenteOpt.isPresent()) {
+            Impuesto impuestoExistente = impuestoExistenteOpt.get();
+
+            // Modificar los campos
+            impuestoExistente.setNombre(impuesto.getNombre());
+            impuestoExistente.setPorcentaje(impuesto.getPorcentaje());
+
+            // Guardar impuesto actualizado
+            return impuestoRepository.save(impuestoExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {

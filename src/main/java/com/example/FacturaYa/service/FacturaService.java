@@ -23,8 +23,32 @@ public class FacturaService {
         return facturaRepository.findById(id);
     }
 
-    public void saveOrUpdate(Factura factura) {
+    public void save(Factura factura) {
         facturaRepository.save(factura);
+    }
+
+    public Factura updateFactura(Long id, Factura factura) {
+        // Buscar factura por ID
+        Optional<Factura> facturaExistenteOpt = facturaRepository.findById(id);
+
+        if (facturaExistenteOpt.isPresent()) {
+            Factura facturaExistente = facturaExistenteOpt.get();
+
+            // Modificar los campos
+            facturaExistente.setCodigo(factura.getCodigo());
+            facturaExistente.setFecha(factura.getFecha());
+            facturaExistente.setSubtotal(factura.getSubtotal());
+            facturaExistente.setTotalImpuestos(factura.getTotalImpuestos());
+            facturaExistente.setTotal(factura.getTotal());
+            facturaExistente.setEstado(factura.getEstado());
+            facturaExistente.setCliente(factura.getCliente());
+            facturaExistente.setMetodoPago(factura.getMetodoPago());
+            // Guardar factura actualizada
+            return facturaRepository.save(facturaExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.FacturaYa.entity.Factura;
 import com.example.FacturaYa.entity.Informe;
 import com.example.FacturaYa.service.InformeService;
 
@@ -40,5 +41,10 @@ public class InformeController {
     @GetMapping("/{id}")
     public Optional<Informe> getById(@PathVariable("id") Long informeId) {
         return informeService.getInforme(informeId);
+    }
+
+    @GetMapping("/ventas/{mes}/{anio}")
+    public List<Factura> getVentasDelMes(@PathVariable int mes, @PathVariable int anio) {
+        return informeService.getVentasDelMes(mes, anio);
     }
 }

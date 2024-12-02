@@ -23,8 +23,26 @@ public class MetodoPagoService {
         return metodoPagoRepository.findById(id);
     }
 
-    public void saveOrUpdate(MetodoPago metodoPago) {
+    public void save(MetodoPago metodoPago) {
         metodoPagoRepository.save(metodoPago);
+    }
+
+    public MetodoPago updateMetodoPago(Long id, MetodoPago metodoPago) {
+        // Buscar metodo de pago por ID
+        Optional<MetodoPago> metodoPagoExistenteOpt = metodoPagoRepository.findById(id);
+
+        if (metodoPagoExistenteOpt.isPresent()) {
+            MetodoPago metodoPagoExistente = metodoPagoExistenteOpt.get();
+
+            // Modificar los campos
+            metodoPagoExistente.setDescripcion(metodoPago.getDescripcion());
+
+            // Guardar metodo de pago actualizado
+            return metodoPagoRepository.save(metodoPagoExistente);
+        } else {
+            // Si no se encuentra, retornar null o lanzar una excepción
+            return null;
+        }
     }
 
     public void delete(Long id) {
