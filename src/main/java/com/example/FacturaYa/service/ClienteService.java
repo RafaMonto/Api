@@ -10,42 +10,46 @@ import com.example.FacturaYa.entity.Cliente;
 import com.example.FacturaYa.repository.ClienteRepository;
 
 @Service
+// SRP: Esta clase gestiona la lógica de negocio de los clientes.
 public class ClienteService {
+
     @Autowired
-    ClienteRepository clienteRepository;
-    
+    private ClienteRepository clienteRepository;
+
     public List<Cliente> getAllClientes() {
+        // ISP: Solo interactúa con los métodos de lectura del repositorio.
         return clienteRepository.findAll();
     }
 
     public Optional<Cliente> getCliente(Long id) {
+        // ISP: Método de lectura.
         return clienteRepository.findById(id);
     }
 
     public void save(Cliente cliente) {
+        // ISP: Método de escritura para guardar un cliente.
         clienteRepository.save(cliente);
     }
 
     public Cliente updateCliente(Long id, Cliente cliente) {
-        // Buscar cliente por ID
+        // OCP: La lógica para actualizar un cliente se puede extender sin modificar este método.
         Optional<Cliente> clienteExistenteOpt = clienteRepository.findById(id);
-
         if (clienteExistenteOpt.isPresent()) {
             Cliente clienteExistente = clienteExistenteOpt.get();
-
-            // Modificar los campos
             clienteExistente.setNombre(cliente.getNombre());
             clienteExistente.setEmail(cliente.getEmail());
-
-            // Guardar cliente actualizado
+            clienteExistente.setTelefono(cliente.getTelefono());
+            clienteExistente.setDireccion(cliente.getDireccion());
+            clienteExistente.setCiudad(cliente.getCiudad());
+            clienteExistente.setDepartamento(cliente.getDepartamento());
             return clienteRepository.save(clienteExistente);
         } else {
-            // Si no se encuentra, retornar null o lanzar una excepción
-            return null;
+            return null; // Manejo de errores puede extenderse sin modificar este método.
         }
     }
 
     public void delete(Long id) {
+        // ISP: Método de escritura para eliminar un cliente.
         clienteRepository.deleteById(id);
     }
 }

@@ -11,11 +11,12 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "clientes")
+// SRP: Esta clase representa únicamente los datos de un cliente y su estructura.
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(unique = true)
     private int numero_documento;
 
@@ -31,5 +32,4 @@ public class Cliente {
     private String ciudad;
 
     private String departamento;
-
 }

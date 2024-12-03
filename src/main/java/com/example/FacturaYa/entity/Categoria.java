@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "categoria")
+// SRP: Esta clase solo tiene una responsabilidad: representar la entidad "Categoria" con sus propiedades y relaciones.
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

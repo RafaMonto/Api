@@ -21,31 +21,33 @@ import com.example.FacturaYa.service.ClienteService;
 public class ClienteController {
 
     @Autowired
-    ClienteService clienteService;
-
+    private ClienteService clienteService;
 
     @GetMapping
-    public  List<Cliente> getAll() {
+    public List<Cliente> getAll() {
+        // LSP: Funciona con cualquier implementación de ClienteService que se respete el contrato.
         return clienteService.getAllClientes();
     }
 
     @PostMapping
     public void saveUpdate(@RequestBody Cliente cliente) {
+        // LSP: Se puede sustituir ClienteService con otra implementación sin romper el comportamiento.
         clienteService.save(cliente);
     }
 
     @PutMapping("/{id}")
     public Cliente updateCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
-        return clienteService.updateCliente(id, cliente);
+        return clienteService.updateCliente(id, cliente); // Cumple con LSP.
     }
 
     @DeleteMapping("/{id}")
-    public void saveUpdate(@PathVariable("id") Long clienteId) {
+    public void delete(@PathVariable("id") Long clienteId) {
+        // DIP: El controlador depende de abstracción (ClienteService) en lugar de implementaciones específicas.
         clienteService.delete(clienteId);
     }
 
     @GetMapping("/{id}")
     public Optional<Cliente> getById(@PathVariable("id") Long clienteId) {
-        return clienteService.getCliente(clienteId);
+        return clienteService.getCliente(clienteId); // DIP: Controlador sigue independiente de implementaciones.
     }
 }

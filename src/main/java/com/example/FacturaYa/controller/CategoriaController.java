@@ -23,28 +23,33 @@ public class CategoriaController {
     @Autowired
     CategoriaService categoriaService;
 
+    // SRP: Este método se encarga únicamente de manejar la solicitud GET para obtener todas las categorías.
     @GetMapping
     public List<Categoria> getAll() {
-        return categoriaService.getAllCategorias();
+        return categoriaService.getAllCategorias(); // SRP: Delegación a CategoriaService.
     }
 
+    // SRP: Este método se encarga únicamente de manejar la solicitud POST para guardar o actualizar una categoría.
     @PostMapping
     public void saveOrUpdate(@RequestBody Categoria categoria) {
-        categoriaService.save(categoria);
+        categoriaService.save(categoria); // SRP: Delegación a CategoriaService.
     }
 
+    // SRP: Este método se encarga únicamente de manejar la solicitud PUT para actualizar una categoría específica.
     @PutMapping("/{id}")
     public Categoria updateCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
-        return categoriaService.updateCategoria(id, categoria);
+        return categoriaService.updateCategoria(id, categoria); // SRP: Delegación a CategoriaService.
     }
 
+    // SRP: Este método se encarga únicamente de manejar la solicitud DELETE para eliminar una categoría específica.
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long categoriaId) {
-        categoriaService.delete(categoriaId);
+        categoriaService.delete(categoriaId); // SRP: Delegación a CategoriaService.
     }
 
+    // SRP: Este método se encarga únicamente de manejar la solicitud GET para obtener una categoría por ID.
     @GetMapping("/{id}")
     public Optional<Categoria> getById(@PathVariable("id") Long categoriaId) {
-        return categoriaService.getCategoria(categoriaId);
+        return categoriaService.getCategoria(categoriaId); // SRP: Delegación a CategoriaService.
     }
 }

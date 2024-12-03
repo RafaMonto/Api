@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.example.FacturaYa.entity.Categoria;
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+// SRP: Esta interfaz se encarga únicamente de definir las operaciones de persistencia para la entidad Categoria.
+public interface CategoriaRepository extends JpaRepository<Categoria,Long>{
 
 }
