@@ -167,4 +167,18 @@ public class Factura {
             return factura;
         }
     }
+
+    public static Factura crearFacturaPredeterminada() {
+        Factura factura = new Factura();
+        factura.setCodigo("DEF-001");
+        factura.setFecha(new Date());
+        factura.setSubtotal(BigDecimal.ZERO);
+        factura.setTotalImpuestos(BigDecimal.ZERO);
+        factura.setTotal(BigDecimal.ZERO);
+        factura.setEstado("PENDIENTE");
+        // Asignar objetos Cliente y MetodoPago predeterminados si es necesario
+        // factura.setCliente(clientePredeterminado);
+        // factura.setMetodoPago(metodoPagoPredeterminado);
+        return factura;
+    }
 }

@@ -103,9 +103,11 @@ public class FacturaController {
         try {
             xmlFacturaService.generateXml(facturaOptional.get());
             return "Factura XML generada con éxito!";
-        } catch (JAXBException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "Error al generar el XML: " + e.getMessage();
+        } catch (jakarta.xml.bind.JAXBException e) {
+            throw new RuntimeException(e);
         }
     }
 
