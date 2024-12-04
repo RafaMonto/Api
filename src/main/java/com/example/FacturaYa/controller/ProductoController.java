@@ -4,14 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.FacturaYa.entity.Producto;
 import com.example.FacturaYa.service.ProductoService;
@@ -21,7 +14,7 @@ import com.example.FacturaYa.service.ProductoService;
 public class ProductoController {
 
     @Autowired
-    ProductoService productoService;
+    private ProductoService productoService;
 
     @GetMapping
     public List<Producto> getAll() {
@@ -46,5 +39,12 @@ public class ProductoController {
     @GetMapping("/{id}")
     public Optional<Producto> getById(@PathVariable("id") Long productoId) {
         return productoService.getProducto(productoId);
+    }
+
+    // *Mediator (1)*:
+    // Coordina las operaciones entre diferentes servicios relacionados con los productos.
+    @GetMapping("/resumen")
+    public String generarResumen() {
+        return productoService.generarResumenProducto();
     }
 }

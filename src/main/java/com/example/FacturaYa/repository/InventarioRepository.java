@@ -7,5 +7,5 @@ import com.example.FacturaYa.entity.Inventario;
 
 @Repository
 public interface InventarioRepository extends JpaRepository<Inventario, Long> {
-
+    // JpaRepository es parte del polimorfismo implícito en persistencia.
 }

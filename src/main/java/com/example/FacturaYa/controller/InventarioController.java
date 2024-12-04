@@ -4,14 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.FacturaYa.entity.Inventario;
 import com.example.FacturaYa.service.InventarioService;
@@ -21,7 +14,7 @@ import com.example.FacturaYa.service.InventarioService;
 public class InventarioController {
 
     @Autowired
-    InventarioService inventarioService;
+    private InventarioService inventarioService;
 
     @GetMapping
     public List<Inventario> getAll() {
@@ -46,5 +39,19 @@ public class InventarioController {
     @GetMapping("/{id}")
     public Optional<Inventario> getById(@PathVariable("id") Long inventarioId) {
         return inventarioService.getInventario(inventarioId);
+    }
+
+    // *Facade (1)*:
+    // Controlador coordina las operaciones para generar un resumen de inventario.
+    @GetMapping("/resumen")
+    public String generarResumen() {
+        return inventarioService.generarResumenInventario();
+    }
+
+    // *Command (1)*:
+    // Permite registrar movimientos de entrada/salida como comandos.
+    @PostMapping("/movimiento")
+    public String registrarMovimiento(@RequestBody Inventario inventario) {
+        return inventarioService.registrarMovimientoInventario(inventario);
     }
 }

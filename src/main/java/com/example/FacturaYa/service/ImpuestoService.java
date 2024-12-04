@@ -1,5 +1,6 @@
 package com.example.FacturaYa.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,12 @@ import com.example.FacturaYa.repository.ImpuestoRepository;
 
 @Service
 public class ImpuestoService {
+
     @Autowired
-    ImpuestoRepository impuestoRepository;
-    
+    private ImpuestoRepository impuestoRepository;
+
+    // *Principio de Experto en Información (3)*:
+    // Este método es experto en obtener todos los impuestos de la base de datos.
     public List<Impuesto> getAllImpuestos() {
         return impuestoRepository.findAll();
     }
@@ -27,25 +31,25 @@ public class ImpuestoService {
     }
 
     public Impuesto updateImpuesto(Long id, Impuesto impuesto) {
-        // Buscar impuesto por ID
         Optional<Impuesto> impuestoExistenteOpt = impuestoRepository.findById(id);
 
         if (impuestoExistenteOpt.isPresent()) {
             Impuesto impuestoExistente = impuestoExistenteOpt.get();
-
-            // Modificar los campos
             impuestoExistente.setNombre(impuesto.getNombre());
             impuestoExistente.setPorcentaje(impuesto.getPorcentaje());
-
-            // Guardar impuesto actualizado
             return impuestoRepository.save(impuestoExistente);
         } else {
-            // Si no se encuentra, retornar null o lanzar una excepción
             return null;
         }
     }
 
     public void delete(Long id) {
         impuestoRepository.deleteById(id);
+    }
+
+    // *Fabricación Pura (3)*:
+    // Método que calcula el monto total con impuesto basado en el porcentaje.
+    public BigDecimal calcularTotalConImpuesto(BigDecimal base, BigDecimal porcentaje) {
+        return base.add(base.multiply(porcentaje.divide(BigDecimal.valueOf(100))));
     }
 }

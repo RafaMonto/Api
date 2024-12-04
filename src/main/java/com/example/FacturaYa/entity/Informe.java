@@ -15,6 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "informes")
 public class Informe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,4 +28,11 @@ public class Informe {
 
     @Column(nullable = false, columnDefinition = "JSON")
     private String datosJson;
+
+    // *Adapter (2)*:
+    // Convierte los datos JSON en formato CSV.
+    public String convertirACSV() {
+        // Ejemplo simple de conversión JSON -> CSV.
+        return "CSV convertido de: " + datosJson;
+    }
 }

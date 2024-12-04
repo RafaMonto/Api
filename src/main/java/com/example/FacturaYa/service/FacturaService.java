@@ -13,7 +13,7 @@ import com.example.FacturaYa.repository.FacturaRepository;
 public class FacturaService {
 
     @Autowired
-    FacturaRepository facturaRepository;
+    private FacturaRepository facturaRepository;
 
     public List<Factura> getAllFacturas() {
         return facturaRepository.findAll();
@@ -24,17 +24,17 @@ public class FacturaService {
     }
 
     public void save(Factura factura) {
+        // *Polimorfismo (3)*:
+        // Uso del método save del repositorio que abstrae la lógica de persistencia.
         facturaRepository.save(factura);
     }
 
     public Factura updateFactura(Long id, Factura factura) {
-        // Buscar factura por ID
         Optional<Factura> facturaExistenteOpt = facturaRepository.findById(id);
 
         if (facturaExistenteOpt.isPresent()) {
             Factura facturaExistente = facturaExistenteOpt.get();
 
-            // Modificar los campos
             facturaExistente.setCodigo(factura.getCodigo());
             facturaExistente.setFecha(factura.getFecha());
             facturaExistente.setSubtotal(factura.getSubtotal());
@@ -43,15 +43,16 @@ public class FacturaService {
             facturaExistente.setEstado(factura.getEstado());
             facturaExistente.setCliente(factura.getCliente());
             facturaExistente.setMetodoPago(factura.getMetodoPago());
-            // Guardar factura actualizada
+
+            // *Polimorfismo (4)*:
+            // Delegación de la lógica de guardado al método save del repositorio.
             return facturaRepository.save(facturaExistente);
         } else {
-            // Si no se encuentra, retornar null o lanzar una excepción
             return null;
         }
     }
 
     public void delete(Long id) {
-        facturaRepository.deleteById(id);
+        facturaRepository.deleteById(id); // *Polimorfismo (5)*.
     }
 }

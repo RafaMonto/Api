@@ -3,22 +3,14 @@ package com.example.FacturaYa.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "inventario")
 public class Inventario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +33,66 @@ public class Inventario {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", referencedColumnName = "id")
     private Producto producto;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getTipoMovimiento() {
+        return tipoMovimiento;
+    }
+
+    public void setTipoMovimiento(String tipoMovimiento) {
+        this.tipoMovimiento = tipoMovimiento;
+    }
+
+    public BigDecimal getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(BigDecimal entrada) {
+        this.entrada = entrada;
+    }
+
+    public BigDecimal getSalida() {
+        return salida;
+    }
+
+    public void setSalida(BigDecimal salida) {
+        this.salida = salida;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    // *Bridge (1)*:
+    // Método que calcula el saldo disponible como puente entre las entradas y salidas.
+    public BigDecimal calcularSaldo() {
+        return entrada.subtract(salida);
+    }
 }

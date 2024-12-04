@@ -4,14 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.FacturaYa.entity.MetodoPago;
 import com.example.FacturaYa.service.MetodoPagoService;
@@ -21,8 +14,9 @@ import com.example.FacturaYa.service.MetodoPagoService;
 public class MetodoPagoController {
 
     @Autowired
-    MetodoPagoService metodoPagoService;
+    private MetodoPagoService metodoPagoService;
 
+    // *Principio de Experto en Información*: Delegación al servicio para obtener todos los métodos de pago.
     @GetMapping
     public List<MetodoPago> getAll() {
         return metodoPagoService.getAllMetodosPago();
@@ -46,5 +40,19 @@ public class MetodoPagoController {
     @GetMapping("/{id}")
     public Optional<MetodoPago> getById(@PathVariable("id") Long metodoPagoId) {
         return metodoPagoService.getMetodoPago(metodoPagoId);
+    }
+
+    // *Iterator (1)*:
+    // Devuelve el primer método de pago.
+    @GetMapping("/iterator")
+    public MetodoPago getFirstMetodoPago() {
+        return metodoPagoService.getFirstMetodoPago();
+    }
+
+    // *Adapter (1)*:
+    // Convierte una lista de métodos de pago a un formato legible para exportar como texto plano.
+    @GetMapping("/exportar")
+    public String exportarMetodosPago() {
+        return metodoPagoService.exportarMetodosPago();
     }
 }
