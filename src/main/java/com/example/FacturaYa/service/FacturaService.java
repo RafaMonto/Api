@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.FacturaYa.entity.Factura;
 import com.example.FacturaYa.repository.FacturaRepository;
+import com.example.FacturaYa.service.FacturaService;
+import java.math.BigDecimal;  // Para BigDecimal
+import java.util.Date;
 
 @Service
 public class FacturaService {

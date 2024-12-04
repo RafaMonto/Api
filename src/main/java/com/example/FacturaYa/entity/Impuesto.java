@@ -26,6 +26,31 @@ public class Impuesto {
 
     private BigDecimal porcentaje;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public BigDecimal getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(BigDecimal porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
     // *Fabricación Pura (2)*:
     // Método que calcula el impuesto sin modificar el estado del objeto.
     public BigDecimal calcularImpuesto(BigDecimal base) {
