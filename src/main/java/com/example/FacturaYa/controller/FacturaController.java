@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.math.BigDecimal;  // Para BigDecimal
-import java.util.Date;    // Para Date
+import java.util.Date;    //Para Date
 
 @RestController
 @RequestMapping(path = "api/facturas")

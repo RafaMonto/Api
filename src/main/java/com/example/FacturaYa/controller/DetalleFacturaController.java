@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/detallefacturas")
+@RequestMapping(path = "api/detalle-facturas")
 public class DetalleFacturaController {
 
     @Autowired
@@ -22,8 +22,8 @@ public class DetalleFacturaController {
     // Método para obtener todos los detalles de factura
     @GetMapping
     public List<DetalleFactura> getAll() {
-        return detalleFacturaService.getAllDetallesFactura(); // (3) DRY
-    }
+        return detalleFacturaService.getAllDetallesFactura();
+    } // (3) DRY
 
     // Método para obtener un detalle de factura por ID
     @GetMapping("/{id}")
