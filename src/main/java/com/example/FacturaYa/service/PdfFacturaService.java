@@ -1,49 +1,80 @@
 package com.example.FacturaYa.service;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-
 import com.example.FacturaYa.entity.Factura;
+import com.example.FacturaYa.entity.Cliente;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 
+@Service
 public class PdfFacturaService {
 
-    public ByteArrayOutputStream generatePdf(Factura factura) throws FileNotFoundException {
-        // Definir la ruta de salida del PDF
-        String dest = "Factura_" + factura.getCodigo() + ".pdf";
-        PdfWriter writer = new PdfWriter(dest);
-        PdfDocument pdfDoc = new PdfDocument(writer);
-        Document document = new Document(pdfDoc);
+    public void generatePdf(Factura factura) throws IOException {
+        // Crear un nuevo documento PDF
+        PDDocument document = new PDDocument();
 
-        // Formateo de fecha
+        // Crear una nueva página en el documento
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        // Crear un flujo de contenido para la página
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+        // Comenzar a escribir en el documento
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+        contentStream.newLineAtOffset(25, 750); // Ajustar la posición inicial
+
+        // Agregar contenido de la factura al PDF
+
+        // Título de la factura
+        contentStream.showText("Factura: " + factura.getCodigo());
+        contentStream.newLine();
+
+        // Cliente
+        Cliente cliente = factura.getCliente();
+        contentStream.showText("Cliente: " + (cliente != null ? cliente.getNombre() : "Desconocido"));
+        contentStream.newLine();
+
+        // Fecha de la factura
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaFormateada = sdf.format(factura.getFecha());
+        contentStream.showText("Fecha: " + fechaFormateada);
+        contentStream.newLine();
 
-        // Formateo de BigDecimal
+        // Subtotal, impuestos y total
         DecimalFormat df = new DecimalFormat("#,###.00");
-        String subtotalFormateado = df.format(factura.getSubtotal());
-        String impuestosFormateados = df.format(factura.getTotalImpuestos());
-        String totalFormateado = df.format(factura.getTotal());
+        contentStream.showText("Subtotal: " + df.format(factura.getSubtotal()));
+        contentStream.newLine();
+        contentStream.showText("Impuestos: " + df.format(factura.getTotalImpuestos()));
+        contentStream.newLine();
+        contentStream.showText("Total: " + df.format(factura.getTotal()));
+        contentStream.newLine();
 
-        // Agregar contenido al PDF
-        document.add(new Paragraph("Factura: " + factura.getCodigo()));
-        document.add(new Paragraph("Cliente: " + (factura.getCliente() != null ? factura.getCliente().getNombre() : "Desconocido")));
-        document.add(new Paragraph("Fecha: " + fechaFormateada));
-        document.add(new Paragraph("Subtotal: " + subtotalFormateado));
-        document.add(new Paragraph("Impuestos: " + impuestosFormateados));
-        document.add(new Paragraph("Total: " + totalFormateado));
-        document.add(new Paragraph("Estado: " + factura.getEstado()));
+        // Estado de la factura
+        contentStream.showText("Estado: " + factura.getEstado());
+        contentStream.newLine();
 
-        // Cerrar el documento PDF
+        // Cerrar el flujo de contenido
+        contentStream.endText();
+
+        // Cerrar el flujo de contenido
+        contentStream.close();
+
+        // Guardar el documento PDF en un archivo
+        String dest = "Factura_" + factura.getCodigo() + ".pdf"; // Ruta y nombre del archivo
+        document.save(new File(dest));
+
+        // Cerrar el documento
         document.close();
 
-        System.out.println("Factura generada con éxito: " +dest);
-        return null;
+        System.out.println("Factura generada con éxito: " + dest);
     }
 }

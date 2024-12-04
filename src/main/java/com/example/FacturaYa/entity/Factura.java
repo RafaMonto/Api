@@ -1,15 +1,16 @@
 package com.example.FacturaYa.entity;
 
+import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;  // Importa List para manejar la lista de productos
-
-import jakarta.persistence.*;
-import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "factura")
+@XmlRootElement // Permite la serialización a XML
 public class Factura {
 
     @Id
@@ -20,6 +21,7 @@ public class Factura {
     private String codigo;
 
     @Column(nullable = false)
+    // Formato de fecha personalizado para JAXB
     private Date fecha;
 
     @Column(nullable = false)
@@ -41,19 +43,6 @@ public class Factura {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_metodo_pago", referencedColumnName = "id")
     private MetodoPago metodoPago;
-
-    // Relación uno a muchos con Producto
-    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;  // Lista de productos relacionados con la factura
-
-    // Métodos getter y setter para productos
-    public List<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
-    }
 
     public Long getId() {
         return id;
@@ -127,21 +116,6 @@ public class Factura {
         this.metodoPago = metodoPago;
     }
 
-    // Factory Method (2):
-    // Método estático para crear una factura con valores predeterminados.
-    public static Factura crearFacturaPredeterminada() {
-        Factura factura = new Factura();
-        factura.setCodigo("FAC-" + System.currentTimeMillis()); // Código único basado en timestamp.
-        factura.setFecha(new Date()); // Fecha actual.
-        factura.setSubtotal(BigDecimal.ZERO); // Subtotal predeterminado.
-        factura.setTotalImpuestos(BigDecimal.ZERO); // Impuestos predeterminados.
-        factura.setTotal(BigDecimal.ZERO); // Total predeterminado.
-        factura.setEstado("PENDIENTE"); // Estado inicial.
-        return factura;
-    }
-
-    // Builder (2):
-    // Builder interno para crear facturas de manera flexible.
     public static class Builder {
         private final Factura factura;
 
@@ -192,17 +166,5 @@ public class Factura {
         public Factura build() {
             return factura;
         }
-    }
-
-    // Fabricación Pura (2):
-    // Calcula el total basado en subtotal e impuestos, sin modificar el estado de la factura.
-    public BigDecimal calcularTotal(BigDecimal subtotal, BigDecimal impuestos) {
-        return subtotal.add(impuestos);
-    }
-
-    // Fabricación Pura (3):
-    // Calcula los impuestos basados en un porcentaje sin alterar el estado de la factura.
-    public BigDecimal calcularImpuestos(BigDecimal subtotal, BigDecimal porcentajeImpuestos) {
-        return subtotal.multiply(porcentajeImpuestos);
     }
 }

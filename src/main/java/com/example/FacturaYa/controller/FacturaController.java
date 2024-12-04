@@ -1,13 +1,14 @@
 package com.example.FacturaYa.controller;
 
 import com.example.FacturaYa.entity.Factura;
+import com.example.FacturaYa.repository.FacturaRepository;
 import com.example.FacturaYa.service.FacturaService;
 import com.example.FacturaYa.service.XmlFacturaService;
 import com.example.FacturaYa.service.PdfFacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.xml.bind.JAXBException;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.math.BigDecimal;  // Para BigDecimal
@@ -19,6 +20,9 @@ public class FacturaController {
 
     @Autowired
     private FacturaService facturaService;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
     @Autowired
     private XmlFacturaService xmlFacturaService;
@@ -88,21 +92,38 @@ public class FacturaController {
     }
 
     // Nuevo endpoint para generar XML de la factura
-    @GetMapping("/xml/{id}")
-    public String obtenerXml(@PathVariable("id") Long id) throws JAXBException {
-        Optional<Factura> factura = facturaService.getFactura(id);
-        return "Factura no encontrada";
+    @GetMapping("/generar-xml/{facturaId}")
+    public String generarXml(@PathVariable Long facturaId) {
+        Optional<Factura> facturaOptional = facturaService.getFactura(facturaId);
+
+        if (facturaOptional.isEmpty()) {
+            return "Factura no encontrada con ID: " + facturaId;
+        }
+
+        try {
+            xmlFacturaService.generateXml(facturaOptional.get());
+            return "Factura XML generada con éxito!";
+        } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+            return "Error al generar el XML: " + e.getMessage();
+        }
     }
 
+
+
     // Nuevo endpoint para generar PDF de la factura
-    @GetMapping("/pdf/{id}")
-    public byte[] obtenerPdf(@PathVariable("id") Long id) throws com.example.FacturaYa.controller.DocumentException, java.io.IOException {
-        Optional<Factura> factura = facturaService.getFactura(id);
-        if (factura.isPresent()) {
-            ByteArrayOutputStream pdf = pdfFacturaService.generatePdf(factura.get()); // Generar el PDF
-            return pdf.toByteArray(); // Retornar el PDF como byte array
-        } else {
-            return new byte[0]; // Si no se encuentra la factura, retorna un arreglo vacío
+    @PostMapping("/generar-pdf/{facturaId}")
+    public String generarPdf(@PathVariable Long facturaId) {
+        // Lógica para obtener la factura desde la base de datos
+        Optional<Factura> factura = facturaService.getFactura(facturaId); // Debes implementar este método
+
+        // Generar el PDF
+        try {
+            pdfFacturaService.generatePdf(factura.orElse(null));
+            return "Factura PDF generada con éxito!";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error al generar el PDF.";
         }
     }
 }
